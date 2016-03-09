@@ -7,12 +7,12 @@ port=$2
 
 echo -n "waiting for TCP connection to $host:$port..."
 
-index=0
-while ! nc -w 1 $host $port > /dev/null
+index=1
+while ! nc -z $host $port
 do
-    if [ $RETRIES -gt 0 ]
+    if [ ${RETRIES-0} -gt 0 ]
     then
-        if [ "$index" -gt "$RETRIES" ]
+        if [ "$index" -gt "${RETRIES-0}" ]
         then
             echo -n "too much retries"
             exit 1
@@ -21,7 +21,7 @@ do
     fi
 
     echo -n .
-    sleep $DELAY
+    sleep ${DELAY-1}
 done
 
 echo 'ok'
